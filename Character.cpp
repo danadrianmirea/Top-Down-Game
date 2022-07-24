@@ -59,8 +59,7 @@ void Character::tick(float deltaTime)
     DrawTexturePro(texture, source, dest, Vector2{}, 0.f, WHITE);
 };
 
-Vector2 Character::undoMovement()
+void Character::undoMovement()
 {
    worldPos = worldPosLastFrame;
-   return worldPos;
 }

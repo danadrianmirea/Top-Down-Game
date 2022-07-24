@@ -7,7 +7,7 @@ public:
     Vector2 getWorldPos() { return worldPos; };
     void setScreenPos(int winWidth, int winHeight);
     void tick(float deltaTime);
-    Vector2 undoMovement();
+    void undoMovement();
 
 private:
     Texture2D texture{LoadTexture("characters/knight_idle_spritesheet.png")};
