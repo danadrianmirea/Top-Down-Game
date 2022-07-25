@@ -1,23 +1,20 @@
 #include "Character.h"
 #include "raymath.h"
 
-Character::Character()
+Character::Character(int winWidth, int winHeight)
 {
-    width = texture.width/maxFrames;
+    width = texture.width / maxFrames;
     height = texture.height;
-}
 
-
-void Character::setScreenPos(int winWidth, int winHeight){
     screenPos = {
-        (float)winWidth / 2.0f - 4.0f * (0.5f * width), // getting the rectangle of a single sprite then scale it by 4 because it's tiny
-        (float)winHeight / 2.0f - 4.0f * (0.5f * height)
-        };
-};
+        static_cast<float>(winWidth) / 2.0f - scale * (width / 2.0f), // getting the rectangle of a single sprite then scale it by 4 because it's tiny
+        static_cast<float>(winHeight) / 2.0f - scale * (height / 2.0f)
+    };
+}
 
 void Character::tick(float deltaTime)
 {
-    worldPosLastFrame = worldPos; //saves the world position before new movement is added
+    worldPosLastFrame = worldPos; // saves the world position before new movement is added
 
     Vector2 direction{}; // vector to save direction character wants to go
     if (IsKeyDown(KEY_A))
@@ -53,7 +50,7 @@ void Character::tick(float deltaTime)
     }
     // Draw knight character
     // rectangle for where to draw knight on screen
-    Rectangle dest{screenPos.x, screenPos.y, 4.0f * width, 4.0f * height};
+    Rectangle dest{screenPos.x, screenPos.y, scale * width, scale * height};
     // rectangle for which knight sprite frame we want
     Rectangle source{frame * width, 0.f, rightLeft * width, height};
     DrawTexturePro(texture, source, dest, Vector2{}, 0.f, WHITE);
@@ -61,5 +58,15 @@ void Character::tick(float deltaTime)
 
 void Character::undoMovement()
 {
-   worldPos = worldPosLastFrame;
+    worldPos = worldPosLastFrame;
+}
+
+Rectangle Character::getCollisionRec()
+{
+    return Rectangle{
+        screenPos.x,
+        screenPos.y,
+        width * scale,
+        height * scale
+    };
 }

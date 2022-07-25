@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "Character.h"
+#include "Prop.h"
 
 int main()
 {
@@ -20,8 +21,13 @@ int main()
     const float mapScale{4.0};      // map scale
 
     //set up a character call knight and use class function to place it in the center of the screen
-    Character knight;
-    knight.setScreenPos(windowWidth, windowHeight);
+    Character knight(windowWidth, windowHeight);    
+
+    //array to store props to be used on map
+    Prop props[2]{
+        {Vector2{600.f, 300.f}, LoadTexture("nature_tileset/Rock.png")},
+        {Vector2{400.f, 500.f}, LoadTexture("nature_tileset/Log.png")}
+    };
 
 
     while (!WindowShouldClose())
@@ -35,6 +41,13 @@ int main()
         // draw the background to the game, takes input of the spritesheet, position, rotation and scale
         DrawTextureEx(map, mapPos, mapRot, mapScale, WHITE);
 
+                //renders each prop to display on screen
+        for (auto prop : props)
+        {
+            prop.Render(knight.getWorldPos());
+        }
+
+
         //use tick class function to update knight animation and draw the sprite on the screen
         knight.tick(GetFrameTime());
 
@@ -46,7 +59,17 @@ int main()
         {
             knight.undoMovement();
         }
-        
+
+        //checking collisions with props
+        for(auto prop : props)
+        {
+            if (CheckCollisionRecs(prop.getCollisionRec(knight.getWorldPos()), knight.getCollisionRec()))
+            {
+                knight.undoMovement();
+            }
+        }
+
+
         // stop drawing (graphics)
         EndDrawing();
     }
