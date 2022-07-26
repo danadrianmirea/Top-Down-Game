@@ -2,6 +2,7 @@
 #include "raymath.h"
 #include "Character.h"
 #include "Prop.h"
+#include "Enemy.h"
 
 int main()
 {
@@ -21,7 +22,8 @@ int main()
     const float mapScale{4.0};      // map scale
 
     //set up a character call knight and use class function to place it in the center of the screen
-    Character knight(windowWidth, windowHeight);    
+    Character knight(windowWidth, windowHeight);  
+    Enemy goblin(Vector2{}, LoadTexture("characters/goblin_idle_spritesheet.png"), LoadTexture("characters/goblin_run_spritesheet.png") );  
 
     //array to store props to be used on map
     Prop props[2]{
@@ -69,6 +71,7 @@ int main()
             }
         }
 
+        goblin.tick(GetFrameTime());
 
         // stop drawing (graphics)
         EndDrawing();
