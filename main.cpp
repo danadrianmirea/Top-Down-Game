@@ -25,12 +25,13 @@ int main()
     Character knight(windowWidth, windowHeight);  
     Enemy goblin(Vector2{}, LoadTexture("characters/goblin_idle_spritesheet.png"), LoadTexture("characters/goblin_run_spritesheet.png") );  
 
+    goblin.setTarget(&knight);
+
     //array to store props to be used on map
     Prop props[2]{
         {Vector2{600.f, 300.f}, LoadTexture("nature_tileset/Rock.png")},
         {Vector2{400.f, 500.f}, LoadTexture("nature_tileset/Log.png")}
     };
-
 
     while (!WindowShouldClose())
     {
@@ -48,7 +49,6 @@ int main()
         {
             prop.Render(knight.getWorldPos());
         }
-
 
         //use tick class function to update knight animation and draw the sprite on the screen
         knight.tick(GetFrameTime());

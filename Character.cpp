@@ -14,9 +14,9 @@ Character::Character(int winWidth, int winHeight)
 
 void Character::tick(float deltaTime)
 {
-    worldPosLastFrame = worldPos; // saves the world position before new movement is added
+    BaseCharacter::tick(deltaTime);
 
-    Vector2 direction{}; // vector to save direction character wants to go
+    Vector2 direction{};
     if (IsKeyDown(KEY_A))
         direction.x -= 1.0; // move left
     if (IsKeyDown(KEY_D))
@@ -31,28 +31,11 @@ void Character::tick(float deltaTime)
         // scales up the normalized vector to match speed
         worldPos = Vector2Add(worldPos, Vector2Scale(Vector2Normalize(direction), speed));
 
-        // check if facing left
         direction.x < 0.f ? rightLeft = -1.f : rightLeft = 1.f;
         texture = run;
     }
     else
         texture = idle;
 
-    runningTime += deltaTime;
-
-    // update animation frame
-    if (runningTime >= updateTime)
-    {
-        ++frame;
-        runningTime = 0.f;
-        if (frame > maxFrames)
-            frame = 0;
-    }
-    // Draw knight character
-    // rectangle for where to draw knight on screen
-    Rectangle dest{screenPos.x, screenPos.y, scale * width, scale * height};
-    // rectangle for which knight sprite frame we want
-    Rectangle source{frame * width, 0.f, rightLeft * width, height};
-    DrawTexturePro(texture, source, dest, Vector2{}, 0.f, WHITE);
 };
 
