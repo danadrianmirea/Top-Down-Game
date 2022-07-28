@@ -13,8 +13,8 @@ void BaseCharacter::undoMovement()
 Rectangle BaseCharacter::getCollisionRec()
 {
     return Rectangle{
-        screenPos.x,
-        screenPos.y,
+        getScreenPos().x,
+        getScreenPos().y,
         width * scale,
         height * scale
     };
@@ -33,9 +33,22 @@ void BaseCharacter::tick(float deltaTime)
             frame = 0;
     }
 
+    if (Vector2Length(velocity) != 0.0) // check if velocity vector is not 0
+    {
+        // scales up the normalized vector to match speed
+        worldPos = Vector2Add(worldPos, Vector2Scale(Vector2Normalize(velocity), speed));
+
+        velocity.x < 0.f ? rightLeft = -1.f : rightLeft = 1.f;
+        texture = run;
+    }
+    else
+        texture = idle;
+
+    velocity = {};
+
     // Draw character
     // rectangle for where to draw on screen
-    Rectangle dest{screenPos.x, screenPos.y, scale * width, scale * height};
+    Rectangle dest{getScreenPos().x, getScreenPos().y, scale * width, scale * height};
     // rectangle for which sprite frame we want
     Rectangle source{frame * width, 0.f, rightLeft * width, height};
     DrawTexturePro(texture, source, dest, Vector2{}, 0.f, WHITE);

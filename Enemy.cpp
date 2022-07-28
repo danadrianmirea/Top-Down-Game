@@ -6,15 +6,21 @@
     texture = idle_texture;
     idle = idle_texture;
     run = run_texture;
-
     width = texture.width / maxFrames;
     height = texture.height;
+    speed = 3.5f;
  }
 
 void Enemy::tick(float deltaTime)
  {
-   screenPos = Vector2Subtract(worldPos, target->getWorldPos());
-   BaseCharacter::tick(deltaTime);
+  //Get toTarget  
+  velocity = Vector2Subtract(target->getScreenPos(), getScreenPos());
+
+  BaseCharacter::tick(deltaTime);
  }
 
+Vector2 Enemy::getScreenPos()
+{
+  return Vector2Subtract(worldPos, target->getWorldPos());
+}
  
