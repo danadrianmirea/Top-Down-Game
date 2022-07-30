@@ -12,7 +12,8 @@ class BaseCharacter
         Rectangle getCollisionRec();
         virtual void tick(float deltaTime);
         virtual Vector2 getScreenPos() = 0;
-
+        bool getAlive() { return alive; }
+        void setAlive( bool isAlive ) { alive = isAlive; }
     protected:
         Texture2D texture{LoadTexture("characters/knight_idle_spritesheet.png")};
         Texture2D idle{LoadTexture("characters/knight_idle_spritesheet.png")};
@@ -31,6 +32,8 @@ class BaseCharacter
         float speed{4.f};     //speed of the character
         Vector2 worldPosLastFrame{}; //vector that will store the world position of the previous frame
         Vector2 velocity{};
+    private:
+        bool alive{true};
 };
 
 #endif
